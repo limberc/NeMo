@@ -83,7 +83,7 @@ def filter_cardinal_1(instance: Instance) -> bool:
 def process_cardinal_1(instance: Instance) -> Instance:
     un_normalized = instance.un_normalized
     normalized = instance.normalized
-    un_normalized = re.sub(r"[^0-9]", "", un_normalized)
+    un_normalized = re.sub(r"[^-0-9]", "", un_normalized)
     normalized = re.sub(r"[^a-z ]", "", normalized)
     return Instance(token_type=instance.token_type, un_normalized=un_normalized, normalized=normalized)
 
@@ -127,7 +127,6 @@ def process_measure_1(instance: Instance) -> Instance:
     un_normalized = re.sub(r"(\d)([^\d.\s])", r"\1 \2", un_normalized)
     normalized = re.sub(r"[^a-z\s]", "", normalized)
     normalized = re.sub(r"per ([a-z\s]*)s$", r"per \1", normalized)
-    normalized = re.sub(r"[^a-z ]", "", normalized)
     return Instance(token_type=instance.token_type, un_normalized=un_normalized, normalized=normalized)
 
 
