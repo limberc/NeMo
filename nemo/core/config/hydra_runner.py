@@ -100,7 +100,7 @@ def hydra_runner(
                     task_function=task_function,
                     config_path=config_path,
                     config_name=config_name,
-                    strict=None,
+                #    strict=None,
                 )
 
         return wrapper
