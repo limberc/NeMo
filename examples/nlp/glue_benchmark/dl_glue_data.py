@@ -60,16 +60,16 @@ def format_mrpc(data_dir, path_to_data):
         try:
             mrpc_train_file = os.path.join(mrpc_dir, "msr_paraphrase_train.txt")
             mrpc_test_file = os.path.join(mrpc_dir, "msr_paraphrase_test.txt")
-            URLLIB.urlretrieve(MRPC_TRAIN, mrpc_train_file)
-            URLLIB.urlretrieve(MRPC_TEST, mrpc_test_file)
+            urllib.request.urlretrieve(MRPC_TRAIN, mrpc_train_file)
+            urllib.request.urlretrieve(MRPC_TEST, mrpc_test_file)
         except urllib.error.HTTPError:
             print("Error downloading MRPC")
             return
     assert os.path.isfile(mrpc_train_file), "Train data not found at %s" % mrpc_train_file
     assert os.path.isfile(mrpc_test_file), "Test data not found at %s" % mrpc_test_file
 
-    with io.open(mrpc_test_file, encoding='utf-8') as data_fh, \
-            io.open(os.path.join(mrpc_dir, "test.tsv"), 'w', encoding='utf-8') as test_fh:
+    with open(mrpc_test_file, encoding='utf-8') as data_fh, \
+            open(os.path.join(mrpc_dir, "test.tsv"), 'w', encoding='utf-8') as test_fh:
         header = data_fh.readline()
         test_fh.write("index\t#1 ID\t#2 ID\t#1 String\t#2 String\n")
         for idx, row in enumerate(data_fh):
@@ -77,19 +77,19 @@ def format_mrpc(data_dir, path_to_data):
             test_fh.write("%d\t%s\t%s\t%s\t%s\n" % (idx, id1, id2, s1, s2))
 
     try:
-        URLLIB.urlretrieve(TASK2PATH["MRPC"], os.path.join(mrpc_dir, "dev_ids.tsv"))
+        urllib.request.urlretrieve(TASK2PATH["MRPC"], os.path.join(mrpc_dir, "dev_ids.tsv"))
     except KeyError or urllib.error.HTTPError:
         print("\tError downloading standard development IDs for MRPC. You will need to manually split your data.")
         return
 
     dev_ids = []
-    with io.open(os.path.join(mrpc_dir, "dev_ids.tsv"), encoding='utf-8') as ids_fh:
+    with open(os.path.join(mrpc_dir, "dev_ids.tsv"), encoding='utf-8') as ids_fh:
         for row in ids_fh:
             dev_ids.append(row.strip().split('\t'))
 
-    with io.open(mrpc_train_file, encoding='utf-8') as data_fh, \
-            io.open(os.path.join(mrpc_dir, "train.tsv"), 'w', encoding='utf-8') as train_fh, \
-            io.open(os.path.join(mrpc_dir, "dev.tsv"), 'w', encoding='utf-8') as dev_fh:
+    with open(mrpc_train_file, encoding='utf-8') as data_fh, \
+            open(os.path.join(mrpc_dir, "train.tsv"), 'w', encoding='utf-8') as train_fh, \
+            open(os.path.join(mrpc_dir, "dev.tsv"), 'w', encoding='utf-8') as dev_fh:
         header = data_fh.readline()
         train_fh.write(header)
         dev_fh.write(header)
